@@ -1,9 +1,9 @@
 import React from 'react'
 import { StyledButton } from './Button.styled'
 
-function Button({children}) {
+function Button({children, onClick}) {
   return (
-    <StyledButton>{children}</StyledButton>
+    <StyledButton onClick={onClick}>{children}</StyledButton>
   )
 }
 

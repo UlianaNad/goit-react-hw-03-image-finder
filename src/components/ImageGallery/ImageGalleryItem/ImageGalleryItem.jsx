@@ -3,7 +3,7 @@ import { StyledImg, StyledLi } from './ImageGalleryItem.styled';
 
 function ImageGalleryItem({id, webformatURL, largeImageURL, tags}) {
   return (
-    <StyledLi id={id}>
+    <StyledLi key={id}>
       <StyledImg src={webformatURL} alt={tags} />
     </StyledLi>
   );
