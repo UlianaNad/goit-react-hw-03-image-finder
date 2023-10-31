@@ -17,7 +17,7 @@ export default class App extends Component {
 
   async componentDidMount() {
     try {
-      const { hits, totalHits, total } = await fetchPhotos({
+      const { hits } = await fetchPhotos({
         per_page: this.state.per_page,
         page: this.state.page,
       });
@@ -35,7 +35,7 @@ export default class App extends Component {
     const { page, per_page } = this.state;
     if (prevState.page !== page) {
       try {
-        const { hits, totalHits, total } = await fetchPhotos({
+        const { hits } = await fetchPhotos({
           per_page: per_page,
           page: page,
         });
