@@ -28,12 +28,12 @@ export default class App extends Component {
   }
 
   async componentDidUpdate(prevProps, prevState) {
-    const { page, per_page, query } = this.state;
-    if (!query && prevState.page !== page) {
+    const { page, per_page, q } = this.state;
+    if (!q && prevState.page !== page) {
       this.getPhotos({ page, per_page, fn: fetchPhotos });
     }
-    if (query && (query !== prevState.query || page !== prevState.page)) {
-      this.getPhotos({ page, per_page, q: query, fn: fetchPhotosByQuery });
+    if (q && (q !== prevState.q || page !== prevState.page)) {
+      this.getPhotos({ page, per_page, q: q, fn: fetchPhotosByQuery });
     }
   }
 
@@ -53,8 +53,8 @@ export default class App extends Component {
     }
   };
 
-  handleQuery = query => {
-    this.setState({ query, photos: [], page: 1 });
+  handleQuery = q => {
+    this.setState({ q, photos: [], page: 1 });
   };
 
   toggleModal = imgInfo => {
@@ -67,14 +67,14 @@ export default class App extends Component {
 
   
   render() {
-    const { photos, query, isOpen, imgInfo, total, loading } = this.state;
+    const { photos, q, isOpen, imgInfo, total, loading } = this.state;
 
     return (
       <div>
         <Searchbar setQuery={this.handleQuery} />
-        {query && (
+        {q && (
           <h2>
-            We found {total} picture by search word:{query}
+            We found {total} picture by search word:{q}
           </h2>
         )}
         {loading && !photos.length ? (
