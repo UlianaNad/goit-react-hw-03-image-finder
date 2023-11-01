@@ -6,7 +6,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Button from './Button/Button';
 import Modal from './Modal/Modal';
-import { Rings } from 'react-loader-spinner';
+import Loader from './Loader/Loader';
+
 
 export default class App extends Component {
   state = {
@@ -45,7 +46,11 @@ export default class App extends Component {
         per_page: per_page,
         page: page,
       });
-      this.setState(prev => ({ photos: [...prev.photos, ...hits], total:total }));
+      // this.setState(prev => ({ photos: [...prev.photos, ...hits], total:total }));
+      if (hits && Array.isArray(hits)) {
+        this.setState(prev => ({ photos: [...prev.photos, ...hits], total }));
+      }
+      
     } catch (error) {
       toast.error(error.message);
     } finally{
@@ -78,16 +83,7 @@ export default class App extends Component {
           </h2>
         )}
         {loading && !photos.length ? (
-          <Rings
-            height="80"
-            width="80"
-            color="#4d61a9"
-            radius="6"
-            wrapperStyle={{}}
-            wrapperClass=""
-            visible={true}
-            ariaLabel="rings-loading"
-          />
+          <Loader />
         ) : (
           <ImageGallery toggleModal={this.toggleModal} photos={photos} />
         )}
