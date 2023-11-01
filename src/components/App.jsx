@@ -45,7 +45,7 @@ export default class App extends Component {
         per_page: per_page,
         page: page,
       });
-      this.setState(prev => ({ photos: [...prev.photos, ...hits], total }));
+      this.setState(prev => ({ photos: [...prev.photos, ...hits], total:total }));
     } catch (error) {
       toast.error(error.message);
     } finally{
