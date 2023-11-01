@@ -8,7 +8,6 @@ import Button from './Button/Button';
 import Modal from './Modal/Modal';
 import Loader from './Loader/Loader';
 
-
 export default class App extends Component {
   state = {
     loading: false,
@@ -21,7 +20,6 @@ export default class App extends Component {
     isOpen: false,
     imgInfo: null,
   };
-
 
   async componentDidMount() {
     const { page, per_page } = this.state;
@@ -50,11 +48,10 @@ export default class App extends Component {
       if (hits && Array.isArray(hits)) {
         this.setState(prev => ({ photos: [...prev.photos, ...hits], total }));
       }
-      
     } catch (error) {
       toast.error(error.message);
-    } finally{
-      this.setState({loading:false})
+    } finally {
+      this.setState({ loading: false });
     }
   };
 
@@ -70,7 +67,6 @@ export default class App extends Component {
     this.setState(prev => ({ page: prev.page + 1 }));
   };
 
-  
   render() {
     const { photos, q, isOpen, imgInfo, total, loading } = this.state;
 
@@ -89,7 +85,9 @@ export default class App extends Component {
         )}
 
         {total > photos.length ? (
-          <Button onClick={this.handleLoadMore}>{loading ? 'Loading...' : 'Load more'}</Button>
+          <Button onClick={this.handleLoadMore}>
+            {loading ? 'Loading...' : 'Load more'}
+          </Button>
         ) : null}
         {isOpen ? (
           <Modal close={this.toggleModal} imgInfo={imgInfo}></Modal>
