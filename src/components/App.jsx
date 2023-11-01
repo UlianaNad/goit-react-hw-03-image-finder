@@ -6,6 +6,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Button from './Button/Button';
 import Modal from './Modal/Modal';
+import { Rings } from 'react-loader-spinner';
 
 export default class App extends Component {
   state = {
@@ -14,66 +15,89 @@ export default class App extends Component {
     photos: [],
     page: 1,
     per_page: 12,
-    q:'',
+    q: '',
+    total: null,
     isOpen: false,
-    imgInfo:null
+    imgInfo: null,
   };
+
 
   async componentDidMount() {
     const { page, per_page } = this.state;
-    this.getPhotos({ page, per_page , fn: fetchPhotos})
+    this.getPhotos({ page, per_page, fn: fetchPhotos });
   }
 
   async componentDidUpdate(prevProps, prevState) {
     const { page, per_page, query } = this.state;
     if (!query && prevState.page !== page) {
-      this.getPhotos({ page, per_page , fn: fetchPhotos})
+      this.getPhotos({ page, per_page, fn: fetchPhotos });
     }
-    if(query && (query !== prevState.query || page !== prevState.page)){
-      this.getPhotos({page, per_page, q:query, fn: fetchPhotosByQuery})
+    if (query && (query !== prevState.query || page !== prevState.page)) {
+      this.getPhotos({ page, per_page, q: query, fn: fetchPhotosByQuery });
     }
   }
 
-  getPhotos = async({ page, per_page , q,  fn})=>{
+  getPhotos = async ({ page, per_page, q, fn }) => {
+    this.setState({ loading: true });
     try {
-      const { hits } = await fn({
-        q:q,
+      const { hits, total } = await fn({
+        q: q,
         per_page: per_page,
         page: page,
       });
-      this.setState(prev => ({ photos: [...prev.photos, ...hits] }));
+      this.setState(prev => ({ photos: [...prev.photos, ...hits], total }));
     } catch (error) {
       toast.error(error.message);
+    } finally{
+      this.setState({loading:false})
     }
-  }
+  };
 
-  handleQuery = (query) => {
-    this.setState({query, photos:[], page:1})
-  }
+  handleQuery = query => {
+    this.setState({ query, photos: [], page: 1 });
+  };
 
-  toggleModal = (imgInfo) => {
-    this.setState(prev => ({isOpen: !prev.isOpen, imgInfo}))
-  }
+  toggleModal = imgInfo => {
+    this.setState(prev => ({ isOpen: !prev.isOpen, imgInfo }));
+  };
 
   handleLoadMore = () => {
-    this.setState((prev) => ({ page: prev.page + 1 }));
-  }
+    this.setState(prev => ({ page: prev.page + 1 }));
+  };
 
-  handleClickOutside = ({target, currentTarget}) =>{
-    if(target === currentTarget){
-      this.toggleModal()
-    }
-  }
+  
   render() {
-    const { photos, query, isOpen , imgInfo} = this.state;
+    const { photos, query, isOpen, imgInfo, total, loading } = this.state;
 
     return (
       <div>
         <Searchbar setQuery={this.handleQuery} />
-        {query && <h2>You are looking for: {query}</h2>}
-        <ImageGallery toggleModal={this.toggleModal} photos={photos} />
-        <Button onClick={this.handleLoadMore}>Load more...</Button>
-        {isOpen ? <Modal close={this.handleClickOutside} imgInfo={imgInfo}></Modal> : null}
+        {query && (
+          <h2>
+            We found {total} picture by search word:{query}
+          </h2>
+        )}
+        {loading && !photos.length ? (
+          <Rings
+            height="80"
+            width="80"
+            color="#4d61a9"
+            radius="6"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={true}
+            ariaLabel="rings-loading"
+          />
+        ) : (
+          <ImageGallery toggleModal={this.toggleModal} photos={photos} />
+        )}
+
+        {total > photos.length ? (
+          <Button onClick={this.handleLoadMore}>{loading ? 'Loading...' : 'Load more'}</Button>
+        ) : null}
+        {isOpen ? (
+          <Modal close={this.toggleModal} imgInfo={imgInfo}></Modal>
+        ) : null}
         <ToastContainer />
       </div>
     );
