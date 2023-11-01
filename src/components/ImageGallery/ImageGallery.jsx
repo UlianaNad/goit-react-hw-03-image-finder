@@ -2,11 +2,11 @@ import React from 'react';
 import ImageGalleryItem from './ImageGalleryItem/ImageGalleryItem';
 import { StyledUl } from './ImageGallery.styled';
 
-function ImageGallery({ photos = [] }) {
+function ImageGallery({ toggleModal, photos = [] }) {
   return (
     <StyledUl>
       {photos.map(photo => (
-        <ImageGalleryItem key={photo.id} {...photo} />
+        <ImageGalleryItem toggleModal={toggleModal} key={photo.id} {...photo} />
       ))}
     </StyledUl>
   );

@@ -1,9 +1,14 @@
-import React from 'react'
+import React from 'react';
+import { StyledModal, StyledOverlay } from './Modal.stayled';
 
-function Modal() {
+function Modal({close, imgInfo}) {
   return (
-    <div>Modal</div>
-  )
+    <StyledOverlay onClick={close}>
+      <StyledModal >
+        <img src={imgInfo.largeImageURL} alt={imgInfo.tags} width="800" />
+      </StyledModal>
+    </StyledOverlay>
+  );
 }
 
-export default Modal
+export default Modal;

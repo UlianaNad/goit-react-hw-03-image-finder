@@ -17,3 +17,13 @@ export const fetchPhotos = async params => {
     return error.message;
   }
 };
+
+export const fetchPhotosByQuery = async(params) =>{
+  const { data } = await axios.get('', {
+    params: {
+      key: '39829735-722e175b01b967c16f6acbd5c',
+      ...params,
+    },
+  });
+  return data;
+}
