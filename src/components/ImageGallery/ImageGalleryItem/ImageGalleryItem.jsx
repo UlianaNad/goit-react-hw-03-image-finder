@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyledImg, StyledLi } from './ImageGalleryItem.styled';
+import PropTypes from 'prop-types';
 
 function ImageGalleryItem({
   toggleModal,
@@ -18,5 +19,13 @@ function ImageGalleryItem({
     </StyledLi>
   );
 }
+
+ImageGalleryItem.propTypes = {
+  toggleModal: PropTypes.func.isRequired, 
+  id: PropTypes.number.isRequired, 
+  webformatURL: PropTypes.string.isRequired, 
+  largeImageURL: PropTypes.string.isRequired, 
+  tags: PropTypes.string.isRequired, 
+};
 
 export default ImageGalleryItem;
