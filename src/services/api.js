@@ -1,5 +1,5 @@
 import axios from 'axios';
-axios.defaults.baseURL = 'https://pixabay.com/api';
+axios.defaults.baseURL = 'pixabay.com/api';
 
 export const fetchPhotos = async params => {
   try {
